@@ -14,15 +14,16 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 
-FILES = 
+FILES = philosophers.c
 
 SRCS = $(FILES)
 OBJS = $(SRCS:.c=.o)
-HEAD = 
+HEAD = philosophers.h
 LIBFT = ./libft
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -L $(LIBFT) -lft -o $(NAME)
+	$(MAKE) -C $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) -I $(HEAD) -L$(LIBFT) -lft -o $(NAME)
 
 all: $(NAME)
 
