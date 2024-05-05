@@ -14,25 +14,21 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 
-FILES = philosophers.c
+FILES = src/main.c src/init_data.c src/excute_threads.c src/philo_action.c src/philo_utils.c
 
 SRCS = $(FILES)
 OBJS = $(SRCS:.c=.o)
-HEAD = philosophers.h
-LIBFT = ./libft
+HEAD = ./philosophers.h
 
 $(NAME): $(OBJS)
-	$(MAKE) -C $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -I $(HEAD) -L$(LIBFT) -lft -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -I $(HEAD) -o $(NAME)
 
 all: $(NAME)
 
 clean:
-	$(MAKE) -C $(LIBFT) clean
 	rm -f $(OBJS)
 
 fclean: clean
-	$(MAKE) -C $(LIBFT) fclean
 	rm -f $(NAME)
 
 re: fclean $(NAME)
