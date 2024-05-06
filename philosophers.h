@@ -18,6 +18,8 @@ typedef struct s_philos
 	int			status;
 	int			is_eating;
 	int			time_of_death;
+	int			right_fork_id;
+	int			left_fork_id;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	*right_fk;
 	pthread_mutex_t	*left_fk;

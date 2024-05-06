@@ -30,10 +30,10 @@ int	detect_argv(char *argv[])
 			}
 			if ((argv[i][j] < '0' || argv[i][j] > '9'))
 				return (1);
+			j++;
 		}
-		j++;
+		i++;
 	}
-	i++;
 	return (0);
 }
 
@@ -46,6 +46,7 @@ void	destroy_threads(t_data_arg *data)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		pthread_mutex_destroy(&data->philos[i].mutex);
+		i++;
 	}
 	pthread_mutex_destroy(&data->mutex_for_wrt);
 	pthread_mutex_destroy(&data->mutex);
@@ -72,5 +73,11 @@ int main(int argc, char *argv[])
 	}
 	excute_threads(&data);
 	destroy_threads(&data);
+	if(data.thread)
+		free(data.thread);
+	if(data.forks)
+		free(data.forks);
+	if(data.philos)
+		free(data.philos);
 	return (0);
 }

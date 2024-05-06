@@ -54,6 +54,9 @@ void	init_forks(t_data_arg *data)
 	i = 0;
 	while(i < data->num_philo)
 	{
+		data->philos[i].no = i + 1;
+		data->philos[i].left_fork_id = i;
+        data->philos[i].right_fork_id = (i + 1) % data->num_philo;
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
@@ -79,7 +82,6 @@ int init_threads(t_data_arg *data)
 	while (i < data->num_philo)
 	{
 		data->philos[i].data = data;
-		data->philos[i].no = i + 1;
 		data->philos[i].time_of_death = data->time_to_die;
 		data->philos[i].eat_cnt = 0;
 		data->philos[i].is_eating = 0;
