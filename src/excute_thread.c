@@ -18,9 +18,12 @@ void	*philo_routine(void	*data)
 	t_philos *philo;
 
 	philo = (t_philos *)data;
-	while(is_dead(philo) != false)
+	while (1)
+	{
+		if (is_dead(philo) || philo->eat_cnt == philo->data->num_must_eat)
+			return (NULL);
 		action_philo(philo);
-	return (NULL);
+	}
 }
 
 int	excute_thread(t_philos *philo)
@@ -28,14 +31,12 @@ int	excute_thread(t_philos *philo)
 	int i;
 	int ret;
 
-
 	i = 0;
 	while(i < philo->data->num_philo)
 	{
 		ret = pthread_create(&(philo->thread), NULL, philo_routine, (void *)philo);
 		philo = philo->next;
 		i++;
-		usleep(10);
 	}
 	return (ret);
 }

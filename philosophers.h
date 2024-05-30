@@ -18,11 +18,12 @@ typedef struct s_philos
 	pthread_t			thread;
 	int					no;
 	int					eat_cnt;
+	int					is_dead;
 	int					is_eating;
 	long				time_after_ate;
 	long				start;
-	pthread_mutex_t		*mutex;
-	pthread_mutex_t		wrt_mtx;
+	pthread_mutex_t		mutex;
+	pthread_mutex_t		*wrt_mtx;
 }	t_philos;
 
 typedef struct s_data_arg
@@ -36,19 +37,26 @@ typedef struct s_data_arg
 }	t_data_arg;
 
 //init_data.c
-int init_data(t_data_arg *data, char *argv[]);
+int		init_data(t_data_arg *data, char *argv[]);
 
 //excute_thread.c
-int	excute_thread(t_philos *philo);
+int		excute_thread(t_philos *philo);
 
 //philo_utils.c
-int	x_gettimeofday(void);
-int	x_usleep(useconds_t time);
-long ft_atoi(const char *str);
-int	ft_strcmp(char *s1, char *s2);
+int		x_gettimeofday(void);
+int		x_usleep(useconds_t time);
+long	ft_atoi(const char *str);
+int		ft_strcmp(char *s1, char *s2);
 
-void    get_elapsedtime(long start_time);
+//
+void	*observe_philo(void *data);
+
+//
+long	get_elapsedtime(long start_time);
 void	do_write(t_philos *philo, char *state);
 
+//
+void	action_philo(t_philos *philo);
+int		is_dead(t_philos *philo);
 
 #endif

@@ -35,7 +35,7 @@ void	set_data(t_data_arg *data, char **argv)
 	if (argv[5] != NULL)
 		data->num_must_eat =  ft_atoi(argv[5]);
 	else
-		data->num_must_eat = 0;
+		data->num_must_eat = -1;
 
 }
 
@@ -44,6 +44,9 @@ static int	add_data(t_philos *philo, t_data_arg *datas, int i)
 	philo->data = datas;
 	philo->is_eating = 0;
 	philo->no = i;
+	philo->is_dead = 0;
+	philo->eat_cnt = 0;
+	philo->start = x_gettimeofday();
 	if(init_mutex(philo) == 1)
 		return (false);
 	return (0);
@@ -52,6 +55,7 @@ static int	add_data(t_philos *philo, t_data_arg *datas, int i)
 static void	make_list(t_philos *philo, t_philos *new)
 {
 	philo->next = new;
+	new->right_fk = philo->left_fk;
 	new->next = NULL;
 }
 
@@ -78,5 +82,7 @@ int	init_data(t_data_arg *data, char *argv[])
 		head = philo;
 		i++;
 	}
+	philo->next = data->philo;
+	data->philo->right_fk = philo->left_fk;
 	return (0);
 }
