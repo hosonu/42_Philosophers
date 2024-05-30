@@ -21,8 +21,8 @@ typedef struct s_philos
 	int					is_eating;
 	long				time_after_ate;
 	long				start;
-	pthread_mutex_t		mutex;
-	pthread_mutex_t		*wrt_mtx;
+	pthread_mutex_t		*mutex;
+	pthread_mutex_t		wrt_mtx;
 }	t_philos;
 
 typedef struct s_data_arg
@@ -46,5 +46,9 @@ int	x_gettimeofday(void);
 int	x_usleep(useconds_t time);
 long ft_atoi(const char *str);
 int	ft_strcmp(char *s1, char *s2);
+
+void    get_elapsedtime(long start_time);
+void	do_write(t_philos *philo, char *state);
+
 
 #endif
