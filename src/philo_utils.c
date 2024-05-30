@@ -53,7 +53,7 @@ static long     ft_strtol(const char *str, int sign)
         return (result * sign);
 }
 
-int     ft_atoi(const char *str)
+long     ft_atoi(const char *str)
 {
         long    result;
         int             sign;
@@ -73,7 +73,7 @@ int     ft_atoi(const char *str)
                 sign_fg = 1;
                 str++;
         }
-        return ((int)(ft_strtol(str, sign)));
+        return ((ft_strtol(str, sign)));
 }
 
 int	ft_strcmp(char *s1, char *s2)

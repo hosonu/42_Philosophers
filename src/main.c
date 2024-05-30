@@ -37,21 +37,6 @@ int	detect_argv(char *argv[])
 	return (0);
 }
 
-void	destroy_threads(t_data_arg *data)
-{
-	int i;
-
-	i = 0;
-	while(i < data->num_philo)
-	{
-		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philos[i].mutex);
-		i++;
-	}
-	pthread_mutex_destroy(&data->mutex_for_wrt);
-	pthread_mutex_destroy(&data->mutex);
-}
-
 int main(int argc, char *argv[])
 {
 	t_data_arg data;
@@ -66,18 +51,13 @@ int main(int argc, char *argv[])
 		printf("argv");
 		return (1);
 	}
-	if(init_data(&data, argc, argv) == 1)
+	if(init_data(&data, argv) == 1)
 	{
 		printf("init");
 		return (1);
 	}
-	excute_threads(&data);
-	destroy_threads(&data);
-	if(data.thread)
-		free(data.thread);
-	if(data.forks)
-		free(data.forks);
-	if(data.philos)
-		free(data.philos);
+	observe_philo(data.philo);
+	if(excute_thread(data.philo) != 0)
+		return (1);
 	return (0);
 }
