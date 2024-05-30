@@ -19,7 +19,7 @@ typedef struct s_philos
 	int					no;
 	int					eat_cnt;
 	int					is_dead;
-	int					is_eating;
+	int					dissolution;
 	long				time_after_ate;
 	long				start;
 	pthread_mutex_t		mutex;

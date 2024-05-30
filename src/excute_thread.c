@@ -24,6 +24,7 @@ void	*philo_routine(void	*data)
 			return (NULL);
 		action_philo(philo);
 	}
+	return (NULL);
 }
 
 int	excute_thread(t_philos *philo)

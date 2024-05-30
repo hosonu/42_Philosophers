@@ -25,8 +25,10 @@ void	eating_philo(t_philos *philo)
 	do_write(philo, "fork");
 	do_write(philo, "fork");
 	do_write(philo, "eat");
+	pthread_mutex_lock(&philo->mutex);
 	philo->time_after_ate = x_gettimeofday();
 	philo->eat_cnt++;
+	pthread_mutex_unlock(&philo->mutex);
 	x_usleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(philo->left_fk);
 	pthread_mutex_unlock(philo->right_fk);
