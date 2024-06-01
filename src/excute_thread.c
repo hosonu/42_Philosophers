@@ -20,8 +20,13 @@ void	*philo_routine(void	*data)
 	philo = (t_philos *)data;
 	while (1)
 	{
-		if (is_dead(philo) || philo->eat_cnt == philo->data->num_must_eat)
+		if (philo->is_dead == 1
+			|| philo->eat_cnt == philo->data->num_must_eat)
+		{
 			return (NULL);
+		}
+		if(philo->dissolution == 1)
+			break;
 		action_philo(philo);
 	}
 	return (NULL);

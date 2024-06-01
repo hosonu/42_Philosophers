@@ -47,7 +47,8 @@ void destroy_philo(t_data_arg *data)
 	{
 		pthread_mutex_destroy(data->philo->left_fk);
 		pthread_mutex_destroy(data->philo->wrt_mtx);
-		pthread_mutex_destroy(&data->philo->mutex);
+		pthread_mutex_destroy(&data->philo->death_mutex);
+		pthread_mutex_destroy(&data->philo->eat_mutex);
 		tmp = data->philo;
 		data->philo = data->philo->next;
 		free(tmp);
@@ -55,9 +56,25 @@ void destroy_philo(t_data_arg *data)
 	}
 }
 
+void	join_thread(t_data_arg *data)
+{
+	int i;
+	t_philos *current_philo;
+
+	i = 0;
+	current_philo = data->philo;
+	while (data->num_philo > i)
+	{
+		pthread_join(current_philo->thread, NULL);
+		current_philo = current_philo->next;
+		i++;
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	t_data_arg data;
+	pthread_t	observe_th;
 
 	if(argc < 5 || argc > 6)
 	{
@@ -74,10 +91,11 @@ int main(int argc, char *argv[])
 		printf("init");
 		return (1);
 	}
-	pthread_create(&data.philo->thread, NULL, observe_philo, (void *)data.philo);
+	pthread_create(&observe_th, NULL, observe_philo, (void *)data.philo);
 	if(excute_thread(data.philo) != 0)
 		return (1);
-	pthread_join(data.philo->thread, NULL);
+	join_thread(&data);
+	pthread_join(observe_th, NULL);
 	destroy_philo(&data);
 	return (0);
 }

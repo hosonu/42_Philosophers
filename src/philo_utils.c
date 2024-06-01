@@ -41,7 +41,6 @@ void	do_write(t_philos *philo, char *state)
 			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
 				"is dead");
 		pthread_mutex_unlock(philo->wrt_mtx);
-
 	}
 }
 

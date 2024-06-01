@@ -22,7 +22,9 @@ typedef struct s_philos
 	int					dissolution;
 	long				time_after_ate;
 	long				start;
-	pthread_mutex_t		mutex;
+	pthread_mutex_t		eat_mutex;
+	pthread_mutex_t		death_mutex;
+	pthread_mutex_t		dissolute_mtx;
 	pthread_mutex_t		*wrt_mtx;
 }	t_philos;
 
