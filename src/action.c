@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../philosophers.h"
+#include "../philosophers.h"
 
 void	taking_fork(t_philos *philo)
 {
-	if(philo->no % 2 == 0)
+	if (philo->no % 2 == 0)
 		pthread_mutex_lock(philo->left_fk);
 	else
 		pthread_mutex_lock(philo->right_fk);
@@ -34,8 +34,14 @@ void	eating_philo(t_philos *philo)
 	philo->eat_cnt++;
 	pthread_mutex_unlock(&philo->eat_mutex);
 	do_write(philo, "eat");
-	if(philo->dissolution != 1)
+	pthread_mutex_lock(&philo->dissolute_mtx);
+	if (philo->dissolution != 1)
+	{
+		pthread_mutex_unlock(&philo->dissolute_mtx);
 		x_usleep(philo->data->time_to_eat);
+	}
+	else
+		pthread_mutex_unlock(&philo->dissolute_mtx);
 	pthread_mutex_unlock(philo->left_fk);
 	pthread_mutex_unlock(philo->right_fk);
 }
@@ -43,7 +49,7 @@ void	eating_philo(t_philos *philo)
 void	sleeping_philo(t_philos *philo)
 {
 	do_write(philo, "sleep");
-	if(philo->dissolution != 1)
+	if (philo->dissolution != 1)
 		x_usleep(philo->data->time_to_sleep);
 }
 

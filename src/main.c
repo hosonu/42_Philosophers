@@ -26,7 +26,7 @@ int	detect_argv(char *argv[])
 			if (argv[i][j] == ' ')
 			{
 				j++;
-				continue;
+				continue ;
 			}
 			if ((argv[i][j] < '0' || argv[i][j] > '9'))
 				return (1);
@@ -37,18 +37,19 @@ int	detect_argv(char *argv[])
 	return (0);
 }
 
-void destroy_philo(t_data_arg *data)
+void	destroy_philo(t_data_arg *data)
 {
-	int i;
-	t_philos *tmp;
+	int			i;
+	t_philos	*tmp;
 
 	i = 0;
-	while(data->num_philo > i)
+	while (data->num_philo > i)
 	{
 		pthread_mutex_destroy(data->philo->left_fk);
 		pthread_mutex_destroy(data->philo->wrt_mtx);
 		pthread_mutex_destroy(&data->philo->death_mutex);
 		pthread_mutex_destroy(&data->philo->eat_mutex);
+		pthread_mutex_destroy(&data->philo->dissolute_mtx);
 		tmp = data->philo;
 		data->philo = data->philo->next;
 		free(tmp);
@@ -58,8 +59,8 @@ void destroy_philo(t_data_arg *data)
 
 void	join_thread(t_data_arg *data)
 {
-	int i;
-	t_philos *current_philo;
+	int			i;
+	t_philos	*current_philo;
 
 	i = 0;
 	current_philo = data->philo;
@@ -71,12 +72,12 @@ void	join_thread(t_data_arg *data)
 	}
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	t_data_arg data;
+	t_data_arg	data;
 	pthread_t	observe_th;
 
-	if(argc < 5 || argc > 6)
+	if (argc < 5 || argc > 6)
 	{
 		printf("argc");
 		return (1);
@@ -86,13 +87,13 @@ int main(int argc, char *argv[])
 		printf("argv");
 		return (1);
 	}
-	if(init_data(&data, argv) == 1)
+	if (init_data(&data, argv) == 1)
 	{
 		printf("init");
 		return (1);
 	}
 	pthread_create(&observe_th, NULL, observe_philo, (void *)data.philo);
-	if(excute_thread(data.philo) != 0)
+	if (excute_thread(data.philo) != 0)
 		return (1);
 	join_thread(&data);
 	pthread_join(observe_th, NULL);

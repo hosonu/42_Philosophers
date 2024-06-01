@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -11,22 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../philosophers.h"
+#include "../philosophers.h"
 
 void	*philo_routine(void	*data)
 {
-	t_philos *philo;
+	t_philos	*philo;
 
 	philo = (t_philos *)data;
 	while (1)
 	{
+		pthread_mutex_lock(&philo->death_mutex);
 		if (philo->is_dead == 1
 			|| philo->eat_cnt == philo->data->num_must_eat)
 		{
-			return (NULL);
+			pthread_mutex_unlock(&philo->death_mutex);
+			break ;
 		}
-		if(philo->dissolution == 1)
-			break;
+		pthread_mutex_lock(&philo->dissolute_mtx);
+		if (philo->dissolution == 1)
+		{
+			pthread_mutex_unlock(&philo->dissolute_mtx);
+			pthread_mutex_unlock(&philo->death_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->death_mutex);
+		pthread_mutex_unlock(&philo->dissolute_mtx);
 		action_philo(philo);
 	}
 	return (NULL);
@@ -34,13 +42,14 @@ void	*philo_routine(void	*data)
 
 int	excute_thread(t_philos *philo)
 {
-	int i;
-	int ret;
+	int	i;
+	int	ret;
 
 	i = 0;
-	while(i < philo->data->num_philo)
+	while (i < philo->data->num_philo)
 	{
-		ret = pthread_create(&(philo->thread), NULL, philo_routine, (void *)philo);
+		ret = pthread_create(&(philo->thread), NULL,
+				philo_routine, (void *)philo);
 		philo = philo->next;
 		i++;
 	}

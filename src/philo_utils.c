@@ -12,27 +12,33 @@
 
 #include "../philosophers.h"
 
+static void	do_write_utils(t_philos *philo, char *state)
+{
+	pthread_mutex_lock(philo->wrt_mtx);
+	if (ft_strcmp(state, "fork") == 0)
+		printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
+			"has taken a fork");
+	else if (ft_strcmp(state, "eat") == 0)
+		printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
+			"is eating");
+	else if (ft_strcmp(state, "think") == 0)
+		printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
+			"is thinking");
+	else if (ft_strcmp(state, "sleep") == 0)
+		printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
+			"is sleeping");
+	else if (ft_strcmp(state, "death") == 0)
+		printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
+			"is dead");
+	pthread_mutex_unlock(philo->wrt_mtx);
+}
+
 void	do_write(t_philos *philo, char *state)
 {
-	if(philo->dissolution == 0)
+	pthread_mutex_lock(&philo->dissolute_mtx);
+	if (philo->dissolution == 0)
 	{
-		pthread_mutex_lock(philo->wrt_mtx);
-		if (ft_strcmp(state, "fork") == 0)
-			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-				"has taken a fork");
-		else if (ft_strcmp(state, "eat") == 0)
-			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-				"is eating");
-		else if (ft_strcmp(state, "think") == 0)
-			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-				"is thinking");
-		else if (ft_strcmp(state, "sleep") == 0)
-			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-				"is sleeping");
-		else if (ft_strcmp(state, "death") == 0)
-			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-				"is dead");
-		pthread_mutex_unlock(philo->wrt_mtx);
+		do_write_utils(philo, state);
 	}
 	else
 	{
@@ -42,6 +48,7 @@ void	do_write(t_philos *philo, char *state)
 				"is dead");
 		pthread_mutex_unlock(philo->wrt_mtx);
 	}
+	pthread_mutex_unlock(&philo->dissolute_mtx);
 }
 
 long	get_elapsedtime(long start_time)

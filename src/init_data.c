@@ -10,12 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../philosophers.h"
+#include "../philosophers.h"
 
-static int init_mutex(t_philos *philo)
+static int	init_mutex(t_philos *philo)
 {
 	pthread_mutex_init(&philo->eat_mutex, NULL);
 	pthread_mutex_init(&philo->death_mutex, NULL);
+	pthread_mutex_init(&philo->dissolute_mtx, NULL);
 	philo->left_fk = malloc(sizeof(pthread_mutex_t));
 	if (philo->left_fk == NULL)
 		return (1);
@@ -30,14 +31,13 @@ static int init_mutex(t_philos *philo)
 void	set_data(t_data_arg *data, char **argv)
 {
 	data->num_philo = ft_atoi(argv[1]);
-	data->time_to_die =  ft_atoi(argv[2]);
-	data->time_to_eat =  ft_atoi(argv[3]);
-	data->time_to_sleep =  ft_atoi(argv[4]);
+	data->time_to_die = ft_atoi(argv[2]);
+	data->time_to_eat = ft_atoi(argv[3]);
+	data->time_to_sleep = ft_atoi(argv[4]);
 	if (argv[5] != NULL)
-		data->num_must_eat =  ft_atoi(argv[5]);
+		data->num_must_eat = ft_atoi(argv[5]);
 	else
 		data->num_must_eat = -1;
-
 }
 
 static int	add_data(t_philos *philo, t_data_arg *datas, int i)
@@ -87,7 +87,7 @@ int	init_data(t_data_arg *data, char *argv[])
 		head = philo;
 		i++;
 	}
-	if(i > 1)
+	if (i > 1)
 	{
 		philo->next = data->philo;
 		data->philo->right_fk = philo->left_fk;
