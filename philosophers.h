@@ -19,6 +19,7 @@ typedef struct s_philos
 	int					no;
 	int					eat_cnt;
 	int					is_dead;
+	int					is_eating;
 	int					dissolution;
 	long				time_after_ate;
 	long				start;
@@ -44,21 +45,21 @@ int		init_data(t_data_arg *data, char *argv[]);
 //excute_thread.c
 int		excute_thread(t_philos *philo);
 
-//philo_utils.c
+//action.c
+void	action_philo(t_philos *philo);
+
+//ft_funcs.c
 int		x_gettimeofday(void);
 int		x_usleep(useconds_t time);
-long	ft_atoi(const char *str);
+long	ft_atol(const char *str);
 int		ft_strcmp(char *s1, char *s2);
 
-//
+//observe.c
 void	*observe_philo(void *data);
 
-//
+//philo_utils.c
 long	get_elapsedtime(long start_time);
 void	do_write(t_philos *philo, char *state);
 
-//
-void	action_philo(t_philos *philo);
-int		is_dead(t_philos *philo);
 
 #endif

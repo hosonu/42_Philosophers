@@ -30,12 +30,12 @@ static int	init_mutex(t_philos *philo)
 
 void	set_data(t_data_arg *data, char **argv)
 {
-	data->num_philo = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
+	data->num_philo = ft_atol(argv[1]);
+	data->time_to_die = ft_atol(argv[2]);
+	data->time_to_eat = ft_atol(argv[3]);
+	data->time_to_sleep = ft_atol(argv[4]);
 	if (argv[5] != NULL)
-		data->num_must_eat = ft_atoi(argv[5]);
+		data->num_must_eat = ft_atol(argv[5]);
 	else
 		data->num_must_eat = -1;
 }
@@ -46,6 +46,7 @@ static int	add_data(t_philos *philo, t_data_arg *datas, int i)
 	philo->dissolution = 0;
 	philo->no = i;
 	philo->is_dead = 0;
+	philo->is_eating = 0;
 	philo->eat_cnt = 0;
 	philo->time_after_ate = x_gettimeofday();
 	philo->start = x_gettimeofday();
@@ -78,7 +79,7 @@ int	init_data(t_data_arg *data, char *argv[])
 	head = malloc(sizeof(t_philos));
 	if (head == NULL || add_data(head, data, i) == 1)
 		return (false);
-	while (ft_atoi(argv[1]) > i)
+	while (ft_atol(argv[1]) > i)
 	{
 		philo = malloc(sizeof(t_philos) * 1);
 		if (philo == NULL || add_data(philo, data, i + 1) == 1)

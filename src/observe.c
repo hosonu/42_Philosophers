@@ -12,7 +12,7 @@
 
 #include "../philosophers.h"
 
-void	*dissolution_announcement(t_philos *philo)
+static void	*dissolution_announcement(t_philos *philo)
 {
 	t_philos	*start;
 
@@ -23,11 +23,23 @@ void	*dissolution_announcement(t_philos *philo)
 		if (philo->dissolution == 0)
 		{
 			philo->dissolution = 1;
-			if (pthread_mutex_trylock(philo->left_fk) == 0
-				|| philo->data->num_philo == 1)
+			// if (pthread_mutex_trylock(philo->left_fk) == 0
+			// 	|| philo->data->num_philo == 1)
+			// {
+			// 	printf("ok\n");
+			// 	pthread_mutex_unlock(philo->left_fk);
+			// }
+			// if (pthread_mutex_trylock(philo->right_fk) == 0)
+			// {
+			// 	printf("ok\n");
+			// 	pthread_mutex_unlock(philo->right_fk);
+			// }
+			if (philo->is_eating == 1)
+			{
 				pthread_mutex_unlock(philo->left_fk);
-			if (pthread_mutex_trylock(philo->right_fk) == 0)
 				pthread_mutex_unlock(philo->right_fk);
+			}
+
 		}
 		pthread_mutex_unlock(&philo->dissolute_mtx);
 		philo = philo->next;

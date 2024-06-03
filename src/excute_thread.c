@@ -42,8 +42,8 @@ void	*philo_routine(void	*data)
 
 int	excute_thread(t_philos *philo)
 {
-	int	i;
-	int	ret;
+	long	i;
+	int		ret;
 
 	i = 0;
 	while (i < philo->data->num_philo)
