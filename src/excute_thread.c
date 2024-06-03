@@ -26,15 +26,15 @@ void	*philo_routine(void	*data)
 			pthread_mutex_unlock(&philo->death_mutex);
 			break ;
 		}
-		pthread_mutex_lock(&philo->dissolute_mtx);
-		if (philo->dissolution == 1)
-		{
-			pthread_mutex_unlock(&philo->dissolute_mtx);
-			pthread_mutex_unlock(&philo->death_mutex);
-			break ;
-		}
 		pthread_mutex_unlock(&philo->death_mutex);
-		pthread_mutex_unlock(&philo->dissolute_mtx);
+		// pthread_mutex_lock(&philo->dissolute_mtx);
+		// if (philo->dissolution == 1)
+		// {
+		// 	pthread_mutex_unlock(&philo->dissolute_mtx);
+		// 	pthread_mutex_unlock(&philo->death_mutex);
+		// 	break ;
+		// }
+		// pthread_mutex_unlock(&philo->dissolute_mtx);
 		action_philo(philo);
 	}
 	return (NULL);

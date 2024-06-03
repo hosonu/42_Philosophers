@@ -35,8 +35,8 @@ static void	do_write_utils(t_philos *philo, char *state)
 
 void	do_write(t_philos *philo, char *state)
 {
-	pthread_mutex_lock(&philo->dissolute_mtx);
-	if (philo->dissolution == 0)
+	pthread_mutex_lock(&philo->death_mutex);
+	if (philo->is_dead == 0)
 	{
 		do_write_utils(philo, state);
 	}
@@ -48,7 +48,7 @@ void	do_write(t_philos *philo, char *state)
 				"is dead");
 		pthread_mutex_unlock(philo->wrt_mtx);
 	}
-	pthread_mutex_unlock(&philo->dissolute_mtx);
+	pthread_mutex_unlock(&philo->death_mutex);
 }
 
 long	get_elapsedtime(long start_time)
