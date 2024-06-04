@@ -12,20 +12,20 @@
 
 #include "../philosophers.h"
 
-int	x_gettimeofday(void)
+long long	x_gettimeofday(void)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (-1);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 int	x_usleep(useconds_t time)
 {
-	unsigned int	start;
+	long	start;
 
-	start = (unsigned int)x_gettimeofday();
+	start = (long)x_gettimeofday();
 	while ((x_gettimeofday() - start) < time)
 		usleep(time / 10);
 	return (0);

@@ -49,7 +49,7 @@ int		excute_thread(t_philos *philo);
 void	action_philo(t_philos *philo);
 
 //ft_funcs.c
-int		x_gettimeofday(void);
+long long	x_gettimeofday(void);
 int		x_usleep(useconds_t time);
 long	ft_atol(const char *str);
 int		ft_strcmp(char *s1, char *s2);

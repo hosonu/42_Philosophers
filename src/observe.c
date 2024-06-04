@@ -50,6 +50,8 @@ void	*dissolution_announcement(t_philos *philo)
 		pthread_mutex_unlock(philo->right_fk);
 		philo = philo->next;
 	}
+	if (philo->data->num_philo)
+		pthread_mutex_unlock(philo->left_fk);
 	return (NULL);
 }
 
@@ -65,11 +67,11 @@ void	*observe_philo(void *data)
 		if (x_gettimeofday() - philo->time_after_ate > philo->data->time_to_die)
 		{
 			pthread_mutex_unlock(&philo->eat_mutex);
-			// pthread_mutex_lock(&philo->death_mutex);
-			// philo->is_dead = 1;
-			// pthread_mutex_unlock(&philo->death_mutex);
+			pthread_mutex_lock(&philo->death_mutex);
+			philo->is_dead = 1;
+			pthread_mutex_unlock(&philo->death_mutex);
 			do_write(philo, "death");
-			return (dissolution_announcement(philo));
+			return (dissolution_announcement(philo->next));
 		}
 		if (philo->eat_cnt == philo->data->num_must_eat)
 		{
