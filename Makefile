@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hosonu <hoyuki@student.42tokyo.jp>         +#+  +:+       +#+         #
+#    By: hoyuki <hoyuki@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/01 17:53:19 by hosonu            #+#    #+#              #
-#    Updated: 2024/05/01 17:53:22 by hosonu           ###   ########.fr        #
+#    Updated: 2024/06/04 14:56:52 by hoyuki           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror  -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror  
+# -fsanitize=thread
 
 FILES = src/main.c \
 		src/init_data.c \

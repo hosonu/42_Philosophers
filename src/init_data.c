@@ -46,7 +46,6 @@ static int	add_data(t_philos *philo, t_data_arg *datas, int i)
 	philo->dissolution = 0;
 	philo->no = i;
 	philo->is_dead = 0;
-	philo->is_eating = 0;
 	philo->eat_cnt = 0;
 	philo->time_after_ate = x_gettimeofday();
 	philo->start = x_gettimeofday();
