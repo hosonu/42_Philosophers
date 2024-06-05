@@ -49,8 +49,8 @@ int		excute_thread(t_philos *philo);
 void	action_philo(t_philos *philo);
 
 //ft_funcs.c
-long long	x_gettimeofday(void);
-int		x_usleep(useconds_t time);
+long	x_gettimeofday(void);
+void	x_usleep(long time);
 long	ft_atol(const char *str);
 int		ft_strcmp(char *s1, char *s2);
 
@@ -60,6 +60,5 @@ void	*observe_philo(void *data);
 //philo_utils.c
 long	get_elapsedtime(long start_time);
 void	do_write(t_philos *philo, char *state);
-
 
 #endif

@@ -12,23 +12,29 @@
 
 #include "../philosophers.h"
 
-long long	x_gettimeofday(void)
+long	x_gettimeofday(void)
 {
 	struct timeval	tv;
+	long	time;
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (-1);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
 }
 
-int	x_usleep(useconds_t time)
+void	x_usleep(long time)
 {
 	long	start;
-
-	start = (long)x_gettimeofday();
-	while ((x_gettimeofday() - start) < time)
-		usleep(time / 10);
-	return (0);
+	long	elapsed;
+	start = x_gettimeofday();
+	while (1)
+	{
+		elapsed = x_gettimeofday() - start;
+		if (elapsed > time)
+			return ;
+		usleep(100);
+	}
 }
 
 static long	ft_strtol(const char *str, int sign)

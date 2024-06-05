@@ -6,14 +6,13 @@
 #    By: hoyuki <hoyuki@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/01 17:53:19 by hosonu            #+#    #+#              #
-#    Updated: 2024/06/04 17:57:11 by hoyuki           ###   ########.fr        #
+#    Updated: 2024/06/05 15:16:32 by hoyuki           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror 
-# -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 
 FILES = src/main.c \
 		src/init_data.c \

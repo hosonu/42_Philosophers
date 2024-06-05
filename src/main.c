@@ -79,12 +79,12 @@ int	main(int argc, char *argv[])
 
 	if (argc < 5 || argc > 6)
 	{
-		printf("argc");
+		printf("Error: Invalid command line arguments. \n");
 		return (1);
 	}
 	if (detect_argv(argv) == 1)
 	{
-		printf("argv");
+		printf("Error: Invalid command line arguments. \n");
 		return (1);
 	}
 	if (init_data(&data, argv) == 1)
