@@ -14,17 +14,20 @@
 
 static int	init_mutex(t_philos *philo)
 {
-	pthread_mutex_init(&philo->eat_mutex, NULL);
-	pthread_mutex_init(&philo->death_mutex, NULL);
-	pthread_mutex_init(&philo->dissolute_mtx, NULL);
+	if (mutex_init_error(&philo->eat_mutex) != 0
+		|| mutex_init_error(&philo->death_mutex) != 0
+		|| mutex_init_error(&philo->dissolute_mtx) != 0)
+		return (1);
 	philo->left_fk = malloc(sizeof(pthread_mutex_t));
 	if (philo->left_fk == NULL)
 		return (1);
-	pthread_mutex_init(philo->left_fk, NULL);
+	if (mutex_init_error(philo->left_fk) != 1)
+		return (1);
 	philo->wrt_mtx = malloc(sizeof(pthread_mutex_t));
 	if (philo->wrt_mtx == NULL)
 		return (1);
-	pthread_mutex_init(philo->wrt_mtx, NULL);
+	if (mutex_init_error(philo->wrt_mtx) != 1)
+		return (1);
 	return (0);
 }
 
@@ -50,7 +53,7 @@ static int	add_data(t_philos *philo, t_data_arg *datas, int i)
 	philo->time_after_ate = x_gettimeofday();
 	philo->start = x_gettimeofday();
 	if (init_mutex(philo) == 1)
-		return (false);
+		return (1);
 	if (i == 1)
 	{
 		datas->philo = philo;
@@ -67,27 +70,28 @@ static void	make_list(t_philos *philo, t_philos *new)
 	new->next = NULL;
 }
 
-int	init_data(t_data_arg *data, char *argv[])
+int	init_data(t_data_arg *data, char *argv[], int *index)
 {
 	t_philos	*philo;
 	t_philos	*head;
-	int			i;
+	// int			i;
 
-	i = 1;
+	// i = 1;
+	printf("%d\n", *index);
 	set_data(data, argv);
 	head = malloc(sizeof(t_philos));
-	if (head == NULL || add_data(head, data, i) == 1)
-		return (false);
-	while (ft_atol(argv[1]) > i)
+	if (head == NULL || add_data(head, data, *index) == 1)
+		return (1);
+	while (ft_atol(argv[1]) > *index)
 	{
 		philo = malloc(sizeof(t_philos) * 1);
-		if (philo == NULL || add_data(philo, data, i + 1) == 1)
-			return (false);
+		if (philo == NULL || add_data(philo, data, *index + 1) == 1)
+			return (1);
 		make_list(head, philo);
 		head = philo;
-		i++;
+		(*index)++;
 	}
-	if (i > 1)
+	if (*index > 1)
 	{
 		philo->next = data->philo;
 		data->philo->right_fk = philo->left_fk;

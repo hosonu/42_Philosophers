@@ -8,6 +8,7 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <errno.h>
 
 typedef struct s_philos
 {
@@ -40,7 +41,9 @@ typedef struct s_data_arg
 }	t_data_arg;
 
 //init_data.c
-int		init_data(t_data_arg *data, char *argv[]);
+// int		init_data(t_data_arg *data, char *argv[]);
+int	init_data(t_data_arg *data, char *argv[], int *index);
+
 
 //excute_thread.c
 int		excute_thread(t_philos *philo);
@@ -60,5 +63,6 @@ void	*observe_philo(void *data);
 //philo_utils.c
 long	get_elapsedtime(long start_time);
 void	do_write(t_philos *philo, char *state);
+int	mutex_init_error(pthread_mutex_t *mutex);
 
 #endif

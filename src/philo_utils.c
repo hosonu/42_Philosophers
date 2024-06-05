@@ -6,11 +6,23 @@
 /*   By: hoyuki <hoyuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 04:09:03 by user              #+#    #+#             */
-/*   Updated: 2024/06/05 15:01:09 by hoyuki           ###   ########.fr       */
+/*   Updated: 2024/06/05 15:45:14 by hoyuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
+
+int	mutex_init_error(pthread_mutex_t *mutex)
+{
+	int	ret;
+
+	ret = pthread_mutex_init(mutex, NULL);
+	if (ret == ENOMEM)
+		printf("Insufficient memory to initialize mutex\n");
+	else if (ret == EAGAIN)
+		printf("Failed to initialize mutex as the required resource is temporarily unavaiable\n");
+	return (ret);
+}
 
 static void	do_write_utils(t_philos *philo, char *state)
 {
