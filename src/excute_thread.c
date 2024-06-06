@@ -20,8 +20,7 @@ void	*philo_routine(void	*data)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->death_mutex);
-		if (philo->is_dead == 1
-			|| philo->eat_cnt == philo->data->num_must_eat)
+		if (philo->is_dead == 1)
 		{
 			pthread_mutex_unlock(&philo->death_mutex);
 			break ;
