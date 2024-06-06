@@ -59,18 +59,16 @@ int	check_all_philo_eaten(t_philos *philo)
 
 void	declare_death(t_philos *philo)
 {
-		pthread_mutex_lock(&philo->death_mutex);
-		philo->is_dead = 1;
-		pthread_mutex_unlock(&philo->death_mutex);
-		do_write(philo, "death");
+	pthread_mutex_lock(&philo->death_mutex);
+	philo->is_dead = 1;
+	pthread_mutex_unlock(&philo->death_mutex);
+	do_write(philo, "death");
 }
 
 void	*observe_philo(void *data)
 {
 	t_philos	*philo;
-	int			cnt;
 
-	cnt = 0;
 	philo = (t_philos *)data;
 	while (1)
 	{
@@ -83,8 +81,8 @@ void	*observe_philo(void *data)
 		}
 		pthread_mutex_unlock(&philo->eat_mutex);
 		pthread_mutex_lock(&philo->eat_mutex);
-		if (philo->data->num_must_eat != -1 &&
-			philo->eat_cnt >= philo->data->num_must_eat)
+		if (philo->data->num_must_eat != -1
+			&& philo->eat_cnt >= philo->data->num_must_eat)
 		{
 			pthread_mutex_unlock(&philo->eat_mutex);
 			if (check_all_philo_eaten(philo) == 0)
