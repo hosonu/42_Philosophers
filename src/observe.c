@@ -28,6 +28,38 @@ void	*dissolution_announcement(t_philos *philo)
 	return (NULL);
 }
 
+int	check_all_philo_eaten(t_philos *philo)
+{
+	int	cnt;
+	int	i;
+
+	cnt = 0;
+	i = 0;
+	while (i < philo->data->num_philo)
+	{
+		pthread_mutex_lock(&philo->eat_mutex);
+		if (philo->eat_cnt == philo->data->num_must_eat)
+			cnt++;
+		if (cnt == philo->data->num_philo)
+		{
+			pthread_mutex_unlock(&philo->eat_mutex);
+			return (0);
+		}
+		pthread_mutex_unlock(&philo->eat_mutex);
+		philo = philo->next;
+		i++;
+	}
+	return (1);
+}
+
+void	declare_death(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->death_mutex);
+	philo->is_dead = 1;
+	pthread_mutex_unlock(&philo->death_mutex);
+	do_write(philo, "death");
+}
+
 void	*observe_philo(void *data)
 {
 	t_philos	*philo;
@@ -39,10 +71,7 @@ void	*observe_philo(void *data)
 		if (x_gettimeofday() - philo->time_after_ate > philo->data->time_to_die)
 		{
 			pthread_mutex_unlock(&philo->eat_mutex);
-			pthread_mutex_lock(&philo->death_mutex);
-			philo->is_dead = 1;
-			pthread_mutex_unlock(&philo->death_mutex);
-			do_write(philo, "death");
+			declare_death(philo);
 			return (dissolution_announcement(philo->next));
 		}
 		pthread_mutex_unlock(&philo->eat_mutex);
@@ -50,10 +79,10 @@ void	*observe_philo(void *data)
 		if (philo->eat_cnt == philo->data->num_must_eat)
 		{
 			pthread_mutex_unlock(&philo->eat_mutex);
-			return (dissolution_announcement(philo));
+			if (check_all_philo_eaten(philo) != 1)
+				return (dissolution_announcement(philo));
 		}
 		pthread_mutex_unlock(&philo->eat_mutex);
-
 		philo = philo->next;
 	}
 	return (NULL);

@@ -37,7 +37,7 @@ int	detect_argv(char *argv[])
 	return (0);
 }
 
-void	destroy_philo(t_data_arg *data, int *index)
+void	destroy_philo(t_data_arg *data, int *index, int time)
 {
 	int			i;
 	t_philos	*tmp;
@@ -45,11 +45,15 @@ void	destroy_philo(t_data_arg *data, int *index)
 	i = 0;
 	while (*index > i)
 	{
-		pthread_mutex_destroy(data->philo->left_fk);
-		pthread_mutex_destroy(data->philo->wrt_mtx);
-		pthread_mutex_destroy(&data->philo->death_mutex);
-		pthread_mutex_destroy(&data->philo->eat_mutex);
-		pthread_mutex_destroy(&data->philo->dissolute_mtx);
+		if (time == 0)
+		{
+			free(data->philo->left_fk);
+			free(data->philo->wrt_mtx);
+			pthread_mutex_destroy(data->philo->left_fk);
+			pthread_mutex_destroy(data->philo->wrt_mtx);
+			pthread_mutex_destroy(&data->philo->eat_mutex);
+			pthread_mutex_destroy(&data->philo->death_mutex);
+		}
 		tmp = data->philo;
 		data->philo = data->philo->next;
 		free(tmp);
@@ -72,13 +76,8 @@ void	join_thread(t_data_arg *data)
 	}
 }
 
-int	main(int argc, char *argv[])
+int	check_argv(int argc, char *argv[])
 {
-	t_data_arg	data;
-	pthread_t	observe_th;
-	int			i;
-
-	i = 1;
 	if (argc < 5 || argc > 6)
 	{
 		printf("Error: Invalid command line arguments. \n");
@@ -89,9 +88,21 @@ int	main(int argc, char *argv[])
 		printf("Error: Invalid command line arguments. \n");
 		return (1);
 	}
+	return (0);
+}
+
+int	main(int argc, char *argv[])
+{
+	t_data_arg	data;
+	pthread_t	observe_th;
+	int			i;
+
+	i = 1;
+	if (check_argv(argc, argv) == 1)
+		return (1);
 	if (init_data(&data, argv, &i) == 1)
 	{
-		destroy_philo(&data, &i);
+		destroy_philo(&data, &i, 1);
 		printf("Don't mind! We don't have enough resource :(\n");
 		return (errno);
 	}
@@ -100,6 +111,6 @@ int	main(int argc, char *argv[])
 		return (1);
 	join_thread(&data);
 	pthread_join(observe_th, NULL);
-	destroy_philo(&data, &i);
+	destroy_philo(&data, &i, 0);
 	return (0);
 }

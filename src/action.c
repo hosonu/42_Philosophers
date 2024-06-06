@@ -53,7 +53,6 @@ static void	sleeping_philo(t_philos *philo)
 	if (philo->is_dead != 1)
 		x_usleep(philo->data->time_to_sleep);
 	pthread_mutex_unlock(&philo->death_mutex);
-	
 }
 
 static void	thinking_philo(t_philos *philo)

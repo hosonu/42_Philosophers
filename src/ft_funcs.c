@@ -15,7 +15,7 @@
 long	x_gettimeofday(void)
 {
 	struct timeval	tv;
-	long	time;
+	long			time;
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (-1);
@@ -27,11 +27,12 @@ void	x_usleep(long time)
 {
 	long	start;
 	long	elapsed;
+
 	start = x_gettimeofday();
 	while (1)
 	{
 		elapsed = x_gettimeofday() - start;
-		if (elapsed > time)
+		if (elapsed >= time)
 			return ;
 		usleep(100);
 	}

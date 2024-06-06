@@ -15,8 +15,7 @@
 static int	init_mutex(t_philos *philo)
 {
 	if (mutex_init_error(&philo->eat_mutex) != 0
-		|| mutex_init_error(&philo->death_mutex) != 0
-		|| mutex_init_error(&philo->dissolute_mtx) != 0)
+		|| mutex_init_error(&philo->death_mutex) != 0)
 		return (1);
 	philo->left_fk = malloc(sizeof(pthread_mutex_t));
 	if (philo->left_fk == NULL)
@@ -46,20 +45,20 @@ void	set_data(t_data_arg *data, char **argv)
 static int	add_data(t_philos *philo, t_data_arg *datas, int i)
 {
 	philo->data = datas;
-	philo->dissolution = 0;
 	philo->no = i;
 	philo->is_dead = 0;
 	philo->eat_cnt = 0;
 	philo->time_after_ate = x_gettimeofday();
 	philo->start = x_gettimeofday();
-	if (init_mutex(philo) == 1)
-		return (1);
 	if (i == 1)
 	{
 		datas->philo = philo;
 		datas->philo->next = datas->philo;
-		datas->philo->right_fk = datas->philo->left_fk;
 	}
+	if (init_mutex(philo) == 1)
+		return (1);
+	if (i == 1)
+		datas->philo->right_fk = datas->philo->left_fk;
 	return (0);
 }
 
@@ -74,7 +73,7 @@ int	init_data(t_data_arg *data, char *argv[], int *index)
 {
 	t_philos	*philo;
 	t_philos	*head;
-	
+
 	set_data(data, argv);
 	head = malloc(sizeof(t_philos));
 	if (head == NULL || add_data(head, data, *index) == 1)
