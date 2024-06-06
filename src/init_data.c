@@ -21,12 +21,12 @@ static int	init_mutex(t_philos *philo)
 	philo->left_fk = malloc(sizeof(pthread_mutex_t));
 	if (philo->left_fk == NULL)
 		return (1);
-	if (mutex_init_error(philo->left_fk) != 1)
+	if (mutex_init_error(philo->left_fk) != 0)
 		return (1);
 	philo->wrt_mtx = malloc(sizeof(pthread_mutex_t));
 	if (philo->wrt_mtx == NULL)
 		return (1);
-	if (mutex_init_error(philo->wrt_mtx) != 1)
+	if (mutex_init_error(philo->wrt_mtx) != 0)
 		return (1);
 	return (0);
 }
@@ -74,10 +74,7 @@ int	init_data(t_data_arg *data, char *argv[], int *index)
 {
 	t_philos	*philo;
 	t_philos	*head;
-	// int			i;
-
-	// i = 1;
-	printf("%d\n", *index);
+	
 	set_data(data, argv);
 	head = malloc(sizeof(t_philos));
 	if (head == NULL || add_data(head, data, *index) == 1)
