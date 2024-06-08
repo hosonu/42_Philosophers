@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philosophers.h"
+#include "philosophers.h"
 
 int	mutex_init_error(pthread_mutex_t *mutex)
 {
@@ -44,7 +44,7 @@ static void	do_write_utils(t_philos *philo, char *state)
 			"is sleeping");
 	else if (ft_strcmp(state, "death") == 0)
 		printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-			"is dead");
+			"diad");
 	pthread_mutex_unlock(philo->wrt_mtx);
 }
 
@@ -62,7 +62,7 @@ void	do_write(t_philos *philo, char *state)
 		pthread_mutex_lock(philo->wrt_mtx);
 		if (ft_strcmp(state, "death") == 0)
 			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-				"is dead");
+				"died");
 		pthread_mutex_unlock(philo->wrt_mtx);
 	}
 }

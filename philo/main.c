@@ -10,29 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philosophers.h"
+#include "philosophers.h"
 
 int	detect_argv(char *argv[])
 {
-	int	i;
-	int	j;
+    int i;
+    int j;
 
-	i = 1;
-	while (argv[i] != NULL)
+    i = 1;
+    while (argv[i] != NULL)
+    {
+        j = 0;
+        while (argv[i][j] == ' ')
+            j++;
+        if (argv[i][j] < '0' || argv[i][j] > '9')
+            return (1);
+        if (argv[i][j] == '0' && (argv[i][j + 1] != '\0' || argv[i][j + 1] == '\0'))
+			return (1);
+        while (argv[i][j] != '\0')
+        {
+            if (argv[i][j] < '0' || argv[i][j] > '9')
+                return (1);
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}
+
+int	check_argv(int argc, char *argv[])
+{
+	if (argc < 5 && argc > 6)
 	{
-		j = 0;
-		while (argv[i][j] != '\0')
-		{
-			if (argv[i][j] == ' ')
-			{
-				j++;
-				continue ;
-			}
-			if ((argv[i][j] < '0' || argv[i][j] > '9'))
-				return (1);
-			j++;
-		}
-		i++;
+		printf("Error: Invalid command line arguments. \n");
+		return (1);
+	}
+	if (detect_argv(argv) == 1)
+	{
+		printf("Error: Invalid command line arguments. \n");
+		return (1);
 	}
 	return (0);
 }
@@ -76,26 +92,12 @@ void	join_thread(t_data_arg *data)
 	}
 }
 
-int	check_argv(int argc, char *argv[])
-{
-	if (argc < 5 || argc > 6)
-	{
-		printf("Error: Invalid command line arguments. \n");
-		return (1);
-	}
-	if (detect_argv(argv) == 1)
-	{
-		printf("Error: Invalid command line arguments. \n");
-		return (1);
-	}
-	return (0);
-}
-
 int	main(int argc, char *argv[])
 {
 	t_data_arg	data;
 	pthread_t	observe_th;
 	int			i;
+	int			ret;
 
 	i = 1;
 	if (check_argv(argc, argv) == 1)
@@ -106,11 +108,15 @@ int	main(int argc, char *argv[])
 		printf("Don't mind! We don't have enough resource :(\n");
 		return (errno);
 	}
-	pthread_create(&observe_th, NULL, observe_philo, (void *)data.philo);
-	if (excute_thread(data.philo) != 0)
+	ret = pthread_create(&observe_th, NULL, observe_philo, (void *)data.philo);
+	if (ret != 0 || excute_thread(data.philo) != 0)
+	{
+		printf("pthread_create failed\n");
+		destroy_philo(&data, &i, 0);
 		return (1);
-	join_thread(&data);
+	}
 	pthread_join(observe_th, NULL);
+	join_thread(&data);
 	destroy_philo(&data, &i, 0);
 	return (0);
 }

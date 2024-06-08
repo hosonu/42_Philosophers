@@ -14,13 +14,13 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-FILES = src/main.c \
-		src/init_data.c \
-		src/excute_thread.c \
-		src/action.c \
-		src/observe.c \
-		src/philo_utils.c \
-		src/ft_funcs.c
+FILES = main.c \
+		init_data.c \
+		excute_thread.c \
+		action.c \
+		observe.c \
+		philo_utils.c \
+		ft_funcs.c
 
 SRCS = $(FILES)
 OBJS = $(SRCS:.c=.o)
