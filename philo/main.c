@@ -14,33 +14,34 @@
 
 int	detect_argv(char *argv[])
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    i = 1;
-    while (argv[i] != NULL)
-    {
-        j = 0;
-        while (argv[i][j] == ' ')
-            j++;
-        if (argv[i][j] < '0' || argv[i][j] > '9')
-            return (1);
-        if (argv[i][j] == '0' && (argv[i][j + 1] != '\0' || argv[i][j + 1] == '\0'))
+	i = 1;
+	while (argv[i] != NULL)
+	{
+		j = 0;
+		while (argv[i][j] == ' ')
+			j++;
+		if (argv[i][j] < '0' || argv[i][j] > '9')
 			return (1);
-        while (argv[i][j] != '\0')
-        {
-            if (argv[i][j] < '0' || argv[i][j] > '9')
-                return (1);
-            j++;
-        }
-        i++;
-    }
-    return (0);
+		if (argv[i][j] == '0' && (argv[i][j + 1] != '\0'
+			|| argv[i][j + 1] == '\0'))
+			return (1);
+		while (argv[i][j] != '\0')
+		{
+			if (argv[i][j] < '0' || argv[i][j] > '9')
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }
 
 int	check_argv(int argc, char *argv[])
 {
-	if (argc < 5 && argc > 6)
+	if (argc < 5 || argc > 6)
 	{
 		printf("Error: Invalid command line arguments. \n");
 		return (1);

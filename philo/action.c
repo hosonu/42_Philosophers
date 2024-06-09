@@ -34,14 +34,7 @@ static void	eating_philo(t_philos *philo)
 	philo->eat_cnt++;
 	pthread_mutex_unlock(&philo->eat_mutex);
 	do_write(philo, "eat");
-	pthread_mutex_lock(&philo->death_mutex);
-	if (philo->is_dead != 1)
-	{
-		pthread_mutex_unlock(&philo->death_mutex);
-		x_usleep(philo->data->time_to_eat);
-	}
-	else
-		pthread_mutex_unlock(&philo->death_mutex);
+	x_usleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(philo->left_fk);
 	pthread_mutex_unlock(philo->right_fk);
 }
@@ -49,10 +42,7 @@ static void	eating_philo(t_philos *philo)
 static void	sleeping_philo(t_philos *philo)
 {
 	do_write(philo, "sleep");
-	pthread_mutex_lock(&philo->death_mutex);
-	if (philo->is_dead != 1)
-		x_usleep(philo->data->time_to_sleep);
-	pthread_mutex_unlock(&philo->death_mutex);
+	x_usleep(philo->data->time_to_sleep);
 }
 
 static void	thinking_philo(t_philos *philo)

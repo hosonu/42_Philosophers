@@ -44,21 +44,36 @@ static void	do_write_utils(t_philos *philo, char *state)
 			"is sleeping");
 	else if (ft_strcmp(state, "death") == 0)
 		printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,
-			"diad");
+			"died");
 	pthread_mutex_unlock(philo->wrt_mtx);
+}
+
+static int	check_dead(t_philos *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->data->num_philo)
+	{
+		pthread_mutex_lock(&philo->death_mutex);
+		if (philo->is_dead == 1)
+		{
+			pthread_mutex_unlock(&philo->death_mutex);
+			return (1);
+		}
+		pthread_mutex_unlock(&philo->death_mutex);
+		philo = philo->next;
+		i++;
+	}
+	return (0);
 }
 
 void	do_write(t_philos *philo, char *state)
 {
-	pthread_mutex_lock(&philo->death_mutex);
-	if (philo->is_dead == 0)
-	{
-		pthread_mutex_unlock(&philo->death_mutex);
+	if (check_dead(philo) == 0)
 		do_write_utils(philo, state);
-	}
 	else
 	{
-		pthread_mutex_unlock(&philo->death_mutex);
 		pthread_mutex_lock(philo->wrt_mtx);
 		if (ft_strcmp(state, "death") == 0)
 			printf("%ld %d %s\n", get_elapsedtime(philo->start), philo->no,

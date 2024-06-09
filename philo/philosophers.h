@@ -58,12 +58,6 @@ int		excute_thread(t_philos *philo);
 //action.c
 void	action_philo(t_philos *philo);
 
-//ft_funcs.c
-long	x_gettimeofday(void);
-void	x_usleep(long time);
-long	ft_atol(const char *str);
-int		ft_strcmp(char *s1, char *s2);
-
 //observe.c
 void	*observe_philo(void *data);
 
@@ -71,5 +65,11 @@ void	*observe_philo(void *data);
 long	get_elapsedtime(long start_time);
 void	do_write(t_philos *philo, char *state);
 int		mutex_init_error(pthread_mutex_t *mutex);
+
+//ft_funcs.c
+long	x_gettimeofday(void);
+void	x_usleep(long time);
+long	ft_atol(const char *str);
+int		ft_strcmp(char *s1, char *s2);
 
 #endif
